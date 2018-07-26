@@ -5,7 +5,6 @@ const fs = require('fs')
 const Strungifier = require('./src/Strungifier')
 
 const fileNames = fs.readdirSync('./test/examples/')
-
 const readFileToString = path => {
   const file = fs.readFileSync(`./test/examples/${path}`, {encoding: 'utf-8'})
   return [path, file]

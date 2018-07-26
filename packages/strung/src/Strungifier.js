@@ -71,6 +71,7 @@ class HuffManEncoder {
       .map(([key, value]) => new HuffMannNode(key, value))
 
     this.root = this.build(nodes)
+    this.BITS_PER_NUMBER = 53
   }
 
   build (nodes) {
@@ -90,6 +91,23 @@ class HuffManEncoder {
     return this.build(nodes)
   }
 
+  parsingWorked (number, numberPrevious) {
+    return !numberPrevious || Math.abs(number - numberPrevious) > Number.epsilon
+  }
+
+  formatString (string) {
+    let i = -1
+    let out = []
+    while (++i < string.length) {
+      if (i % this.BITS_PER_NUMBER === 0) {
+        out.push('')
+      }
+      out[out.length - 1] += string[i]
+    }
+    // 11 char sequence
+    out = out.map(n => `"${parseInt(n, 2).toString(36)}"`)
+    return out
+  }
   encode (string) {
     let encodedString = ''
     let index = -1
@@ -99,7 +117,7 @@ class HuffManEncoder {
       encodedString += this.root.buildPath(charAsPattern)
     }
 
-    return encodedString
+    return this.formatString(encodedString)
   }
 }
 
