@@ -1,24 +1,29 @@
+class Segment {
+  constructor (isString) {
+    this.content = ''
+    this.end = -1
+    this.isString = !!isString
+  }
+}
 
 function findStrings (file) {
   let prevWasBackSlash = false
-  let isInString = false
   let index = -1
-  let run = ''
+  let segment = new Segment()
   const strings = []
 
   while (++index < file.length) {
     if (prevWasBackSlash) {
       prevWasBackSlash = false
     } else if (file[index] === '"') {
-      if (isInString) {
-        strings.push(run)
-        run = ''
-      }
-      isInString = !isInString
-    } else if (isInString) {
-      run += file[index]
+      strings.push(segment)
+      segment.end = index
+      segment = new Segment(!segment.isString)
+    } else {
+      segment.content += file[index]
     }
   }
+  strings.push(segment)
 
   return strings
 }
@@ -107,9 +112,14 @@ class Strungifier {
   strungify (file) {
     const strings = findStrings(file)
 
-    const encoder = new HuffManEncoder(strings.join(''))
+    const encoder = new HuffManEncoder(strings.map(s => s.content).join(''))
 
-    return encoder.encode(strings.join(''))
+    strings.filter(s => s.isString)
+      .forEach(string => {
+        string.content = encoder.encode(string.content)
+      })
+
+    return strings.map(s => s.content).join('')
   }
 }
 
