@@ -1,0 +1,14 @@
+{
+  "name": "strung",
+  "version": "1.0.0",
+  "description": "A string loader",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "mgarber93",
+  "license": "ISC"
+}
