@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const fs = require('fs')
+const Strungifier = require('./src/Strungifier')
 
 const fileNames = fs.readdirSync('./test/examples/')
 
@@ -7,7 +8,10 @@ const readFileToString = path => {
   return [path, fs.readFileSync(`./test/examples/${path}`)]
 }
 
-const strung = str => str
+const strung = options => {
+  const strungifier = new Strungifier(options)
+  return strungifier.strungify.bind(strungifier)
+}
 
 const writeStrung = ([path, str]) => {
   return fs.writeFileSync(`./test/public/${path}`, str)
@@ -15,5 +19,5 @@ const writeStrung = ([path, str]) => {
 
 fileNames
   .map(readFileToString)
-  .map(([filePath, content]) => [filePath, strung(content)])
+  .map(([filePath, content]) => [filePath, strung()(content)])
   .forEach(writeStrung)
