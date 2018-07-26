@@ -31,6 +31,16 @@ class HuffMannNode {
     this.right = null
   }
 
+  buildPath (pattern) {
+    if (this.left && pattern.test(this.left.char)) {
+      return '0' + this.left.buildPath(pattern)
+    } else if (this.right && pattern.test(this.right.char)) {
+      return '1' + this.right.buildPath(pattern)
+    } else {
+      return ''
+    }
+  }
+
   static combine (nodeA, nodeB) {
     const parent = new HuffMannNode(
       nodeA.char + nodeB.char,
@@ -74,6 +84,18 @@ class HuffManEncoder {
 
     return this.build(nodes)
   }
+
+  encode (string) {
+    let encodedString = ''
+    let index = -1
+
+    while (++index < string.length) {
+      const charAsPattern = new RegExp(string[index], 'g')
+      encodedString += this.root.buildPath(charAsPattern)
+    }
+
+    return encodedString
+  }
 }
 
 class Strungifier {
@@ -84,9 +106,10 @@ class Strungifier {
 
   strungify (file) {
     const strings = findStrings(file)
+
     const encoder = new HuffManEncoder(strings.join(''))
 
-    return file
+    return encoder.encode(strings.join(''))
   }
 }
 
