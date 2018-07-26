@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+
+require('./src/polyfill')
 const fs = require('fs')
 const Strungifier = require('./src/Strungifier')
 
