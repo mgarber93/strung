@@ -109,11 +109,6 @@ class HuffManEncoder {
 
     const compressedString = this.compressString(encodedString)
 
-    console.assert(
-      this.decompressString(compressedString) === encodedString,
-      `expected ${encodedString} but got ${this.decompressString(compressedString)}`
-    )
-
     return encodedString
   }
 
