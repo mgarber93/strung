@@ -1,34 +1,5 @@
 const HuffManEncoder = require('./HuffManEncoder')
-
-class Segment {
-  constructor (isString) {
-    this.content = ''
-    this.end = -1
-    this.isString = !!isString
-  }
-}
-
-function findStrings (file) {
-  let prevWasBackSlash = false
-  let index = -1
-  let segment = new Segment()
-  const strings = []
-
-  while (++index < file.length) {
-    if (prevWasBackSlash) {
-      prevWasBackSlash = false
-    } else if (file[index] === '"') {
-      strings.push(segment)
-      segment.end = index
-      segment = new Segment(!segment.isString)
-    } else {
-      segment.content += file[index]
-    }
-  }
-  strings.push(segment)
-
-  return strings
-}
+const segmenter = require('./Segmenter')
 
 class Strungifier {
   constructor (options = {}) {
@@ -37,7 +8,7 @@ class Strungifier {
   }
 
   strungify (file) {
-    const strings = findStrings(file)
+    const strings = segmenter(file)
 
     const encoder = new HuffManEncoder(
       strings
