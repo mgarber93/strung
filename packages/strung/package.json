@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "jest --env=node --colors --coverage test"
+    "test": "jest --env=node --colors test",
+    "test:watch": "jest --env=node --colors --watch test"
   },
   "author": "mgarber93",
   "license": "ISC",
