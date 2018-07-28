@@ -43,6 +43,8 @@ class HuffMannNode {
   }
 }
 
+BITS_PER_NUMBER = 52
+
 class HuffManEncoder {
   constructor (text) {
     this.mapCharToFreq = text.split('')
@@ -55,7 +57,6 @@ class HuffManEncoder {
       .map(([key, value]) => new HuffMannNode(key, value))
 
     this.root = this.build(nodes)
-    this.BITS_PER_NUMBER = 52
   }
 
   build (nodes) {
@@ -83,7 +84,7 @@ class HuffManEncoder {
     let i = -1
     let out = []
     while (++i < string.length) {
-      if (i % this.BITS_PER_NUMBER === 0) {
+      if (i % BITS_PER_NUMBER === 0) {
         out.push('')
       }
       out[out.length - 1] += string[i]
