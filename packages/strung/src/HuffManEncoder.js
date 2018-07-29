@@ -50,8 +50,6 @@ class HuffMannNode {
   }
 }
 
-BITS_PER_NUMBER = 52
-
 class HuffManEncoder {
   constructor (text) {
     this.mapCharToFreq = text.split('')
@@ -107,20 +105,6 @@ class HuffManEncoder {
     return !numberPrevious || Math.abs(number - numberPrevious) > Number.epsilon
   }
 
-  compressString (string) {
-    let i = -1
-    let out = []
-    while (++i < string.length) {
-      if (i % BITS_PER_NUMBER === 0) {
-        out.push('')
-      }
-      out[out.length - 1] += string[i]
-    }
-    // 11 char sequence
-    out = out.map(n => parseInt(n, 2).toString(36))
-    return `"${out.join(',')}"`
-  }
-
   decompressString (string) {
     const numbers = string.slice(1, -1).split(',')
     return numbers.map(n => parseInt(n, 36).toString(2)).join('')
@@ -131,17 +115,15 @@ class HuffManEncoder {
     let index = -1
 
     while (++index < string.length) {
-      const charAsPattern = new RegExp(string[index])
+      const charAsPattern = new RegExp(this.escape(string[index]))
       encodedString += this.root.buildPath(charAsPattern)
     }
-
-    const compressedString = this.compressString(encodedString)
 
     return `$$$$("${encodedString}")`
   }
 
   escape (char) {
-    return ['.'].includes(char) ? `\\${char}` : char
+    return ['.', ',', '*', '\\'].includes(char) ? `\\${char}` : char
   }
 
   serializeTree () {
@@ -168,9 +150,9 @@ class HuffManEncoder {
   let i = -1
   let o = ''
   const t = ${JSON.stringify(this.serializeTree())}
-  while(++i < str.length) {
-    if (t.hasOwnProperty(str.slice(0, i))) {
-      o += t[str.slice(0, i)]
+  while(++i <= str.length) {
+    if (t.hasOwnProperty(str.slice(0, i === 0 ? 1 : i))) {
+      o += t[str.slice(0, i === 0 ? 1 : i)]
       str = str.slice(i)
       i = -1
     }
