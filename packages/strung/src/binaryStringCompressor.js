@@ -1,9 +1,5 @@
 function padOnLeftWithZeros (string, minSize) {
-  let out = string
-  while (out.length < minSize) {
-    out = '0' + out
-  }
-  return out
+  return string.padStart(minSize, '0')
 }
 
 function binaryStringCompressor (binary) {
