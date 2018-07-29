@@ -12,6 +12,13 @@ class HuffMannNode {
     } else if (this.right && pattern.test(this.right.char)) {
       return '1' + this.right.buildPath(pattern)
     } else {
+      console.assert(this.char.length === 1,
+        [
+          this.left && `my left is: ${this.left.char}`,
+          this.right && `my right is: ${this.right.char}`,
+          `im looking for: ${pattern}`
+        ].join(', ')
+      )
       return ''
     }
   }
@@ -59,6 +66,26 @@ class HuffManEncoder {
     this.root = this.build(nodes)
   }
 
+  getMostCommonChar () {
+    return Object.entries(this.mapCharToFreq)
+      .reduce(([maxChar, maxFreq], [char, freq]) => {
+        if (!maxChar || freq > maxFreq) {
+          return [char, freq]
+        }
+        return [maxChar, maxFreq]
+      })
+  }
+
+  getMostRareChar () {
+    return Object.entries(this.mapCharToFreq)
+      .reduce(([minChar, minFreq], [char, freq]) => {
+        if (!minChar || freq < minFreq) {
+          return [char, freq]
+        }
+        return [minChar, minFreq]
+      })
+  }
+
   build (nodes) {
     if (nodes.length <= 1) {
       return nodes[0]
@@ -104,7 +131,7 @@ class HuffManEncoder {
     let index = -1
 
     while (++index < string.length) {
-      const charAsPattern = new RegExp(string[index], 'g')
+      const charAsPattern = new RegExp(string[index])
       encodedString += this.root.buildPath(charAsPattern)
     }
 
@@ -118,7 +145,7 @@ class HuffManEncoder {
     const mapPathToChar = {}
 
     for (let i = 0; i < chars.length; i++) {
-      const charAsPattern = new RegExp(chars[i], 'g')
+      const charAsPattern = new RegExp(chars[i])
       mapPathToChar[this.root.buildPath(charAsPattern)] = chars[i]
     }
 

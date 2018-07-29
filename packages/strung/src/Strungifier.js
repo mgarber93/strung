@@ -13,13 +13,13 @@ class Strungifier {
     const encoder = new HuffManEncoder(
       strings
         .filter(s => s.isString)
-        .map(s => s.content)
+        .map(s => s.content.slice(1, -1))
         .join('')
     )
 
     strings.filter(s => s.isString)
       .forEach(string => {
-        string.content = encoder.encode(string.content)
+        string.content = encoder.encode(string.content.slice(1, -1))
       })
 
     return encoder.makeDecoder() + strings.map(s => s.content).join('')
