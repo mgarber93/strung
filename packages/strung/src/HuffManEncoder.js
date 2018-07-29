@@ -137,7 +137,11 @@ class HuffManEncoder {
 
     const compressedString = this.compressString(encodedString)
 
-    return encodedString
+    return `$$$$("${encodedString}")`
+  }
+
+  escape (char) {
+    return ['.'].includes(char) ? `\\${char}` : char
   }
 
   serializeTree () {
@@ -145,15 +149,34 @@ class HuffManEncoder {
     const mapPathToChar = {}
 
     for (let i = 0; i < chars.length; i++) {
-      const charAsPattern = new RegExp(chars[i])
-      mapPathToChar[this.root.buildPath(charAsPattern)] = chars[i]
+      const charAsPattern = new RegExp(this.escape(chars[i]))
+      const path = this.root.buildPath(charAsPattern)
+
+      console.assert(
+        !mapPathToChar.hasOwnProperty(path),
+        `path colision at: ${path} between ${mapPathToChar[path]} and ${chars[i]}.`
+      )
+
+      mapPathToChar[path] = chars[i]
     }
 
     return mapPathToChar
   }
 
   makeDecoder () {
-    return `function $$$$ (str) { return ${JSON.stringify(this.serializeTree())}}\n`
+    return `function $$$$ (str) {
+  let i = -1
+  let o = ''
+  const t = ${JSON.stringify(this.serializeTree())}
+  while(++i < str.length) {
+    if (t.hasOwnProperty(str.slice(0, i))) {
+      o += t[str.slice(0, i)]
+      str = str.slice(i)
+      i = -1
+    }
+  }
+  return o
+}\n`
   }
 }
 

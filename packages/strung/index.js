@@ -15,11 +15,11 @@ const strung = options => {
   return strungifier.strungify.bind(strungifier)
 }
 
-const writeStrung = ([path, str]) => {
-  return fs.writeFileSync(`./test/public/${path}`, str)
+const writeStrung = ([path, actual, expected]) => {
+  return fs.writeFileSync(`./test/public/${path}`, actual)
 }
 
 fileNames
   .map(readFileToString)
-  .map(([filePath, content]) => [filePath, strung()(content)])
+  .map(([filePath, content]) => [filePath, strung()(content), content])
   .forEach(writeStrung)

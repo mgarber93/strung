@@ -43,4 +43,14 @@ test('should find the most common char', () => {
   expect(encoder.getMostRareChar()).toEqual(['E', 1])
 })
 
+test('should create serialized tree', () => {
+  const encoder = new HuffManEncoder(example)
+  const chars = encoder.root.char
+  const charsWithPaths = Object.values(encoder.serializeTree())
+
+  chars.split('').forEach(c => {
+    expect(charsWithPaths).toContain(c)
+  })
+})
+
 createTestFromString(example, 'lorem')
