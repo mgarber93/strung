@@ -1,30 +1,32 @@
-function padOnLeftWithZeros (string, minSize) {
-  return string.padStart(minSize, '0')
-}
+const encodableSymbols = require('./encodableSymbols')
 
 function binaryStringCompressor (binary) {
-  const cleaned = binary.trim()
-  const parsed = parseInt(cleaned.slice(0, 54), 2)
-  const parsedFirst53 = parsed.toString(36)
+  let segment = binary.slice(0, 53)
+  let leadingZeros = -1
+  while (segment[++leadingZeros] === '0') {}
 
-  if (cleaned.length === 0) {
-    return ''
-  } if (cleaned.length < 54) {
-    return parsedFirst53
-  } else {
-    return padOnLeftWithZeros(parsedFirst53, 11) + binaryStringCompressor(cleaned.slice(53))
+  const parsedNumber = parseInt(segment, 2)
+
+  if (parsedNumber === 0) {
+    leadingZeros = Math.max(leadingZeros - 1, 0)
   }
+
+  const compressed = encodableSymbols[leadingZeros] + parsedNumber
+    .toString(36)
+    .padStart(11, '0')
+  return compressed + (binary.length > 53 ? binaryStringCompressor(binary.slice(53)) : '')
 }
 
 function binaryStringDecompressor (compressed) {
-  const cleaned = compressed.slice(0, 12)
+  let segment = compressed.slice(0, 12)
+  console.assert(segment.length === 12, segment)
+  let leadingZeros = encodableSymbols.indexOf(segment[0])
+  console.assert(leadingZeros >= 0)
+  const binary = parseInt(compressed.slice(1, 12), 36).toString(2)
 
-  const first11 = parseInt(compressed.slice(0, 12), 36).toString(2)
-  if (compressed.length < 12) {
-    return first11
-  } else {
-    return padOnLeftWithZeros(first11, 53) + binaryStringDecompressor(compressed.slice(12))
-  }
+  const decompressed = Array(leadingZeros).fill('0').join('') + binary
+
+  return decompressed + (compressed.length > 12 ? binaryStringDecompressor(compressed.slice(12)) : '')
 }
 
 module.exports.binaryStringCompressor = binaryStringCompressor

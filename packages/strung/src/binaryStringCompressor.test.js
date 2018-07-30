@@ -10,11 +10,10 @@ const makeBinarySequence = length => {
 }
 
 function testBinarySequence (binarySequence, name) {
-  test(name, () => {
-    const compressedSequence = binaryStringCompressor(binarySequence)
-
-    expect(compressedSequence.length).toBeLessThanOrEqual(binarySequence.length)
-    expect(binaryStringDecompressor(compressedSequence)).toBe(binarySequence)
+  const compressedSequence = binaryStringCompressor(binarySequence)
+  const actual = binaryStringDecompressor(compressedSequence)
+  test(`${name} from: ${compressedSequence} got: ${actual}`, () => {
+    expect(actual).toBe(binarySequence)
   })
 }
 
