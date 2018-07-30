@@ -15,7 +15,10 @@ function findStrings (file) {
   while (++index < file.length) {
     if (prevWasBackSlash) {
       prevWasBackSlash = false
-    } else if (file[index] === '"') {
+      segment.content += `\${file[index]}`
+    } else if (file[index] === '\\') {
+      prevWasBackSlash = true
+    } else if (file[index] === '"' || file[index] === '\'') {
       const shouldIncludeInCurrentSeg = segment.isString
       if (shouldIncludeInCurrentSeg) {
         segment.content += file[index]
