@@ -31,7 +31,7 @@ function createTestFromString (text, name) {
     const rareString = makeStringMaker([encoder.getMostRareChar()[0]])(1)
     const encodedRareResult = encoder.encode(rareString)
     const commonString = makeStringMaker([encoder.getMostCommonChar()[0]])(1)
-    const encodedCommonResult = encoder.encode(commonString)
+    const encodedCommonResult = encoder.encode(commonString, true)
 
     expect(encodedCommonResult.length).toBeLessThan(encodedRareResult.length)
   })

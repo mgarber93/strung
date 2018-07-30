@@ -19,15 +19,18 @@ function binaryStringCompressor (binary) {
 
 function binaryStringDecompressor (compressed) {
   let segment = compressed.slice(0, 12)
-  console.assert(segment.length === 12, segment)
   let leadingZeros = encodableSymbols.indexOf(segment[0])
-  console.assert(leadingZeros >= 0)
   const binary = parseInt(compressed.slice(1, 12), 36).toString(2)
-
   const decompressed = Array(leadingZeros).fill('0').join('') + binary
-
   return decompressed + (compressed.length > 12 ? binaryStringDecompressor(compressed.slice(12)) : '')
+}
+
+function makeSerializedDecompressor () {
+  const decompressor = binaryStringDecompressor.toString()
+  const symbols = `(JSON.parse('${JSON.stringify(encodableSymbols)}'))`
+  return decompressor.replace('encodableSymbols', symbols)
 }
 
 module.exports.binaryStringCompressor = binaryStringCompressor
 module.exports.binaryStringDecompressor = binaryStringDecompressor
+module.exports.makeSerializedDecompressor = makeSerializedDecompressor

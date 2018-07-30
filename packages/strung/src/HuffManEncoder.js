@@ -1,3 +1,8 @@
+const {
+  binaryStringCompressor,
+  makeSerializedDecompressor
+} = require('./binaryStringCompressor')
+
 class HuffMannNode {
   constructor (char, freq) {
     this.char = char
@@ -110,7 +115,7 @@ class HuffManEncoder {
     return numbers.map(n => parseInt(n, 36).toString(2)).join('')
   }
 
-  encode (string) {
+  encode (string, leaveAsBinary) {
     let encodedString = ''
     let index = -1
 
@@ -119,7 +124,7 @@ class HuffManEncoder {
       encodedString += this.root.buildPath(charAsPattern)
     }
 
-    return `$$$$("${encodedString}")`
+    return `$$$$("${leaveAsBinary ? encodedString : binaryStringCompressor(encodedString)}")`
   }
 
   escape (char) {
@@ -146,7 +151,9 @@ class HuffManEncoder {
   }
 
   makeDecoder () {
-    return `function $$$$ (str) {
+    return `function $$$$ (compressed) {
+  ${makeSerializedDecompressor()}
+  let str = binaryStringDecompressor(compressed)
   let i = -1
   let o = ''
   const t = ${JSON.stringify(this.serializeTree())}
