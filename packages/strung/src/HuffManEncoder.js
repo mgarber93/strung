@@ -128,7 +128,7 @@ class HuffManEncoder {
   }
 
   escape (char) {
-    return ['.', ',', '*', '\\'].includes(char) ? `\\${char}` : char
+    return ['.', '(', ')', '[', ']', '?', '+', ',', '*', '\\'].includes(char) ? `\\${char}` : char
   }
 
   serializeTree () {
