@@ -1,4 +1,4 @@
-const {binaryStringCompressor, binaryStringDecompressor} = require('./binaryStringCompressor')
+const {binaryStringCompressor, bdcmp} = require('./binaryStringCompressor')
 
 const makeBinarySequence = length => {
   let i = -1
@@ -11,7 +11,7 @@ const makeBinarySequence = length => {
 
 function testBinarySequence (binarySequence, name) {
   const compressedSequence = binaryStringCompressor(binarySequence)
-  const actual = binaryStringDecompressor(compressedSequence)
+  const actual = bdcmp(compressedSequence)
   test(`${name} from: ${compressedSequence} got: ${actual}`, () => {
     expect(actual).toBe(binarySequence)
   })

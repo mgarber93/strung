@@ -17,20 +17,28 @@ function binaryStringCompressor (binary) {
   return compressed + (binary.length > 53 ? binaryStringCompressor(binary.slice(53)) : '')
 }
 
-function binaryStringDecompressor (compressed) {
-  let segment = compressed.slice(0, 12)
-  let leadingZeros = encodableSymbols.indexOf(segment[0])
-  const binary = parseInt(compressed.slice(1, 12), 36).toString(2)
-  const decompressed = Array(leadingZeros).fill('0').join('') + binary
-  return decompressed + (compressed.length > 12 ? binaryStringDecompressor(compressed.slice(12)) : '')
+/**
+ * bdcmp -- binary string decompressor
+ * This function needs to be minified since it is included in the bundle
+ * as is...
+ *
+ * @param  {compressed binary sequence <string>}
+ * @return {binary sequence <string>}
+ */
+function bdcmp (c) {
+  let s = c.slice(0, 12)
+  let z = encodableSymbols.indexOf(s[0])
+  const b = parseInt(c.slice(1, 12), 36).toString(2)
+  const d = Array(z).fill('0').join('') + b
+  return d + (c.length > 12 ? bdcmp(c.slice(12)) : '')
 }
 
 function makeSerializedDecompressor () {
-  const decompressor = binaryStringDecompressor.toString()
+  const decompressor = bdcmp.toString()
   const symbols = `(JSON.parse('${JSON.stringify(encodableSymbols)}'))`
   return decompressor.replace('encodableSymbols', symbols)
 }
 
 module.exports.binaryStringCompressor = binaryStringCompressor
-module.exports.binaryStringDecompressor = binaryStringDecompressor
+module.exports.bdcmp = bdcmp
 module.exports.makeSerializedDecompressor = makeSerializedDecompressor
