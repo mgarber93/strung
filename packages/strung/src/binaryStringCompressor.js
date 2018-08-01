@@ -49,7 +49,7 @@ function bdcmp (c) {
 
 function makeSerializedDecompressor () {
   let decompressor = bdcmp.toString()
-  const symbols = `(JSON.parse('${JSON.stringify(encodableSymbols)}'))`
+  const symbols = `[${encodableSymbols.map(s => `${JSON.stringify(s)}`)}]`
   decompressor = decompressor.replace(new RegExp('encodableSymbols', 'g'), symbols)
   decompressor = decompressor.replace(new RegExp('endOfFileSymbol', 'g'), `'${endOfFileSymbol}'`)
   decompressor = decompressor.replace(new RegExp('bitsPerCharacter', 'g'), bitsPerCharacter)
