@@ -33,13 +33,14 @@ function binaryStringCompressor (binary) {
  */
 function bdcmp (c) {
   let z = -1
+  const s = encodableSymbols
   while (c.charAt(c.length - 1 - ++z) === endOfFileSymbol) {}
-  let o = encodableSymbols.indexOf(c.charAt(c.length - z - 1))
+  let o = s.indexOf(c.charAt(c.length - z - 1))
     .toString(2)
     .padStart(bitsPerCharacter, '0')
     .slice(z - bitsPerCharacter)
   for (let i = c.length - z - 2; i >= 0; i--) {
-    o = encodableSymbols.indexOf(c.charAt(i))
+    o = s.indexOf(c.charAt(i))
       .toString(2)
       .padStart(bitsPerCharacter, '0') + o
   }
