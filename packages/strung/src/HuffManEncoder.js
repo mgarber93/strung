@@ -171,9 +171,9 @@ class HuffManEncoder {
   }
 
   makeDecoder () {
-    const decoder = `function $$$$ (compressed) {
+    const decoder = `function $$$$ (c) {
   ${makeSerializedDecompressor()}
-  let str = bdcmp(compressed)
+  let str = bdcmp(c)
   let i = -1
   let o = ''
   const t = ${JSON.stringify(this.serializeTree())}
