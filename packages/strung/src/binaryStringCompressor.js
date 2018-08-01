@@ -1,20 +1,27 @@
 const encodableSymbols = require('./encodableSymbols')
 
+const endOfFileSymbol = '.'
+
+const numberOfEncodables = encodableSymbols.length
+const bitsPerCharacter = Math.floor(Math.log2(numberOfEncodables))
+
 function binaryStringCompressor (binary) {
-  let segment = binary.slice(0, 53)
-  let leadingZeros = -1
-  while (segment[++leadingZeros] === '0') {}
+  let string = binary
+  let output = ''
 
-  const parsedNumber = parseInt(segment, 2)
-
-  if (parsedNumber === 0) {
-    leadingZeros = Math.max(leadingZeros - 1, 0)
+  while (string.length >= bitsPerCharacter) {
+    let segment = string.slice(0, bitsPerCharacter)
+    const parsedNumber = parseInt(segment, 2)
+    output += encodableSymbols[parsedNumber]
+    string = string.slice(bitsPerCharacter)
   }
 
-  const compressed = encodableSymbols[leadingZeros] + parsedNumber
-    .toString(36)
-    .padStart(11, '0')
-  return compressed + (binary.length > 53 ? binaryStringCompressor(binary.slice(53)) : '')
+  if (string.length) {
+    output += encodableSymbols[parseInt(string, 2)] +
+      Array(bitsPerCharacter - string.length).fill(endOfFileSymbol).join('')
+  }
+
+  return output
 }
 
 /**
@@ -26,17 +33,27 @@ function binaryStringCompressor (binary) {
  * @return {binary sequence <string>}
  */
 function bdcmp (c) {
-  let s = c.slice(0, 12)
-  let z = encodableSymbols.indexOf(s[0])
-  const b = parseInt(c.slice(1, 12), 36).toString(2)
-  const d = Array(z).fill('0').join('') + b
-  return d + (c.length > 12 ? bdcmp(c.slice(12)) : '')
+  let removedZeros = -1
+  while (c.charAt(c.length - 1 - ++removedZeros) === endOfFileSymbol) {}
+  let output = encodableSymbols.indexOf(c.charAt(c.length - removedZeros - 1))
+    .toString(2)
+    .padStart(bitsPerCharacter, '0')
+    .slice(removedZeros - bitsPerCharacter)
+  for (let i = c.length - removedZeros - 2; i >= 0; i--) {
+    output = encodableSymbols.indexOf(c.charAt(i))
+      .toString(2)
+      .padStart(bitsPerCharacter, '0') + output
+  }
+  return output
 }
 
 function makeSerializedDecompressor () {
-  const decompressor = bdcmp.toString()
+  let decompressor = bdcmp.toString()
   const symbols = `(JSON.parse('${JSON.stringify(encodableSymbols)}'))`
-  return decompressor.replace('encodableSymbols', symbols)
+  decompressor = decompressor.replace(new RegExp('encodableSymbols', 'g'), symbols)
+  decompressor = decompressor.replace(new RegExp('endOfFileSymbol', 'g'), `'${endOfFileSymbol}'`)
+  decompressor = decompressor.replace(new RegExp('bitsPerCharacter', 'g'), bitsPerCharacter)
+  return decompressor
 }
 
 module.exports.binaryStringCompressor = binaryStringCompressor

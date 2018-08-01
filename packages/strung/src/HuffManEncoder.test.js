@@ -29,7 +29,7 @@ function createTestFromString (text, name) {
 
   test(`should encode from ${name}`, () => {
     const rareString = makeStringMaker([encoder.getMostRareChar()[0]])(1)
-    const encodedRareResult = encoder.encode(rareString)
+    const encodedRareResult = encoder.encode(rareString, true)
     const commonString = makeStringMaker([encoder.getMostCommonChar()[0]])(1)
     const encodedCommonResult = encoder.encode(commonString, true)
 
