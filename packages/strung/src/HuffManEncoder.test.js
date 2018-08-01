@@ -9,20 +9,14 @@ test('should export a constructor', () => {
 
 const getRandomOfArray = array => array[Math.floor(Math.random() * array.length)]
 
-const RARE_CHARS = ['z', 'x']
-const COMMON_CHARS = ['a', 'e', ' ']
-
 const makeStringMaker = arrayOfChars => length => {
   let i = -1
-  str = ''
+  let str = ''
   while (++i < length) {
     str += getRandomOfArray(arrayOfChars)
   }
   return str
 }
-
-const makeRare = makeStringMaker(RARE_CHARS)
-const makeCommon = makeStringMaker(COMMON_CHARS)
 
 function createTestFromString (text, name) {
   const encoder = new HuffManEncoder(example)
