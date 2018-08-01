@@ -26,8 +26,7 @@ function binaryStringCompressor (binary) {
 
 /**
  * bdcmp -- binary string decompressor
- * This function needs to be minified since it is included in the bundle
- * as is...
+ * This function needs to be minified since it is included in the bundle as is...
  *
  * @param  {compressed binary sequence <string>}
  * @return {binary sequence <string>}

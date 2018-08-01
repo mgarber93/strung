@@ -135,7 +135,13 @@ class HuffManEncoder {
 
     if (this.verbose) {
       const inputStats = this.calculateStringReport(string)
-      this.log(`changed: ${(result.length - string.length) * 100 / string.length} ${inputStats}`)
+      this.log(`changed by ${
+        result.length - string.length
+      } characters (${
+        ((result.length - string.length) * 100 / string.length).toString().substring(0, 6)
+      }%) ${
+        inputStats
+      }`)
     }
 
     return result
@@ -165,7 +171,7 @@ class HuffManEncoder {
   }
 
   makeDecoder () {
-    return `function $$$$ (compressed) {
+    const decoder = `function $$$$ (compressed) {
   ${makeSerializedDecompressor()}
   let str = bdcmp(compressed)
   let i = -1
@@ -180,6 +186,10 @@ class HuffManEncoder {
   }
   return o
 }\n`
+    if (this.verbose) {
+      this.log(`decoder size: ${decoder.length}`)
+    }
+    return decoder
   }
 }
 
