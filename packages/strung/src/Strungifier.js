@@ -14,7 +14,8 @@ class Strungifier {
       strings
         .filter(s => s.isString)
         .map(s => s.content.slice(1, -1))
-        .join('')
+        .join(''),
+      this
     )
 
     strings.filter(s => s.isString)

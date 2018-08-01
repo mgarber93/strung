@@ -33,18 +33,18 @@ function binaryStringCompressor (binary) {
  * @return {binary sequence <string>}
  */
 function bdcmp (c) {
-  let removedZeros = -1
-  while (c.charAt(c.length - 1 - ++removedZeros) === endOfFileSymbol) {}
-  let output = encodableSymbols.indexOf(c.charAt(c.length - removedZeros - 1))
+  let z = -1
+  while (c.charAt(c.length - 1 - ++z) === endOfFileSymbol) {}
+  let o = encodableSymbols.indexOf(c.charAt(c.length - z - 1))
     .toString(2)
     .padStart(bitsPerCharacter, '0')
-    .slice(removedZeros - bitsPerCharacter)
-  for (let i = c.length - removedZeros - 2; i >= 0; i--) {
-    output = encodableSymbols.indexOf(c.charAt(i))
+    .slice(z - bitsPerCharacter)
+  for (let i = c.length - z - 2; i >= 0; i--) {
+    o = encodableSymbols.indexOf(c.charAt(i))
       .toString(2)
-      .padStart(bitsPerCharacter, '0') + output
+      .padStart(bitsPerCharacter, '0') + o
   }
-  return output
+  return o
 }
 
 function makeSerializedDecompressor () {

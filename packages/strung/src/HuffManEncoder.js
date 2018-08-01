@@ -56,7 +56,8 @@ class HuffMannNode {
 }
 
 class HuffManEncoder {
-  constructor (text) {
+  constructor (text, options = {}) {
+    Object.assign(this, { log: console.log }, options)
     this.mapCharToFreq = text.split('')
       .reduce((acc, char) => {
         acc[char] = (acc[char] || 0) + 1
@@ -115,6 +116,10 @@ class HuffManEncoder {
     return numbers.map(n => parseInt(n, 36).toString(2)).join('')
   }
 
+  calculateStringReport (string) {
+    return `${(new Set(string.split(''))).size} symbols`
+  }
+
   encode (string, leaveAsBinary) {
     let encodedString = ''
     let index = -1
@@ -124,7 +129,16 @@ class HuffManEncoder {
       encodedString += this.root.buildPath(charAsPattern)
     }
 
-    return `$$$$("${leaveAsBinary ? encodedString : binaryStringCompressor(encodedString)}")`
+    const result = `$$$$("${
+      leaveAsBinary ? encodedString : binaryStringCompressor(encodedString)
+    }")`
+
+    if (this.verbose) {
+      const inputStats = this.calculateStringReport(string)
+      this.log(`changed: ${(result.length - string.length) * 100 / string.length} ${inputStats}`)
+    }
+
+    return result
   }
 
   escape (char) {
