@@ -25,6 +25,12 @@ class Strungifier {
 
     return encoder.makeDecoder() + strings.map(s => s.content).join('')
   }
+
+  apply (compiler) {
+    compiler.plugin('emit', function(compilation, callback) {
+      console.log('emited: ', compilation, callback)
+    }
+  }
 }
 
 module.exports = Strungifier
