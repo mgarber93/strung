@@ -27,9 +27,9 @@ class Strungifier {
   }
 
   apply (compiler) {
-    compiler.plugin('emit', function(compilation, callback) {
+    compiler.plugin('emit', function (compilation, callback) {
       console.log('emited: ', compilation, callback)
-    }
+    })
   }
 }
 

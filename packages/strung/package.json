@@ -20,5 +20,8 @@
   },
   "standard": {
     "globals": [ "expect", "test" ]
+  },
+  "engines": {
+    "node": ">=7.0"
   }
 }
