@@ -27,8 +27,8 @@ class Strungifier {
   }
 
   apply (compiler) {
-    compiler.plugin('emit', function (compilation, callback) {
-      console.log('emited: ', compilation, callback)
+    compiler.hooks.compile.tap('Strung', function (compilation, callback) {
+      console.log('hello from strung')
     })
   }
 }
