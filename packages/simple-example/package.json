@@ -4,11 +4,23 @@
   "description": "Example project that uses strung",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --env=node --colors --coverage test",
+    "test:watch": "jest --env=node --colors --watch test",
+    "lint": "standard --fix"
   },
-  "author": "",
+  "author": "Matt Garber",
+  "contributors": [
+    "Matt Garber <mgarber93@gmail.com>"
+  ],
   "license": "ISC",
   "dependencies": {
     "strung": "file:../strung"
+  },
+  "devDependencies": {
+    "jest": "^23.4.2",
+    "standard": "^11.0.1"
+  },
+  "standard": {
+    "globals": [ "expect", "test" ]
   }
 }
