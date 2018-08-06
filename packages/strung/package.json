@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "init": "mkdir -p test/public",
     "start": "node index.js --verbose",
     "test": "jest --env=node --colors --coverage test",
     "test:watch": "jest --env=node --colors --watch test",
