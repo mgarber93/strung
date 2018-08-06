@@ -7,7 +7,10 @@
     "init": "lerna run init",
     "test": "lerna run test"
   },
-  "author": "",
+  "author": "Matt Garber",
+  "contributors": [
+    "Matt Garber <mgarber93@gmail.com>"
+  ],
   "license": "ISC",
   "devDependencies": {
     "lerna": "^3.0.0-rc.0"
