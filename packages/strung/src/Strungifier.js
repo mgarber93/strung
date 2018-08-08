@@ -3,27 +3,27 @@ const segmenter = require('./Segmenter')
 
 class Strungifier {
   constructor (options = {}) {
-    this.strings = []
+    this.segments = []
     Object.assign(this, options)
   }
 
   strungify (file) {
-    const strings = segmenter(file)
+    const segments = segmenter(file)
 
     const encoder = new HuffManEncoder(
-      strings
+     segments
         .filter(s => s.isString)
         .map(s => s.content.slice(1, -1))
         .join(''),
       this
     )
 
-    strings.filter(s => s.isString)
-      .forEach(string => {
-        string.content = encoder.encode(string.content.slice(1, -1))
+    segments.filter(s => s.isString)
+      .forEach(segment => {
+        segment.content = encoder.encode(segment.content.slice(1, -1))
       })
 
-    return encoder.makeDecoder() + strings.map(s => s.content).join('')
+    return encoder.makeDecoder() + segments.map(s => s.content).join('')
   }
 
   apply (compiler) {
