@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "init": "lerna run init",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "start:debug": "cd ./packages/simple-example && npm run start:debug"
   },
   "author": "Matt Garber",
   "contributors": [
