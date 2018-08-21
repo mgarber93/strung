@@ -11,7 +11,7 @@ class Strungifier {
     const segments = segmenter(file)
 
     const encoder = new HuffManEncoder(
-     segments
+      segments
         .filter(s => s.isString)
         .map(s => s.content.slice(1, -1))
         .join(''),
@@ -27,8 +27,30 @@ class Strungifier {
   }
 
   apply (compiler) {
-    compiler.hooks.compile.tap('Strung', function (compilation, callback) {
-      console.log('hello from strung')
+    compiler.hooks.compilation.tap('Strung', compilation => {
+      compilation.hooks
+        .succeedModule
+        .tap('Strung', webpackModule => {
+          const input = webpackModule._source.source()
+          const ouput = this.strungify(input)
+          webpackModule._source._value = ouput
+        })
+    })
+
+    compiler.hooks.emit.tap('Strung', function (compilation) {
+      let filelist = 'In this build:\n\n'
+      for (let filename in compilation.assets) {
+        filelist += ('- ' + filename + '\n')
+      }
+
+      compilation.assets['strung-results.md'] = {
+        source: function () {
+          return filelist
+        },
+        size: function () {
+          return filelist.length
+        }
+      }
     })
   }
 }
