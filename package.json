@@ -6,6 +6,7 @@
   "scripts": {
     "init": "lerna run init",
     "test": "lerna run test",
+    "start": "lerna run start --parallel strung simple-example",
     "start:debug": "cd ./packages/simple-example && npm run start:debug"
   },
   "author": "Matt Garber",
