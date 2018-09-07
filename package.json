@@ -4,7 +4,7 @@
   "description": "Monorepo for strung project",
   "main": "index.js",
   "scripts": {
-    "init": "lerna run init",
+    "init": "lerna bootstrap",
     "test": "lerna run test",
     "start": "lerna run start --parallel strung simple-example",
     "start:debug": "cd ./packages/simple-example && npm run start:debug"
@@ -13,8 +13,21 @@
   "contributors": [
     "Matt Garber <mgarber93@gmail.com>"
   ],
-  "license": "ISC",
+  "license": "GPL-3.0",
   "devDependencies": {
     "lerna": "^3.0.0-rc.0"
-  }
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mgarber93/strung.git"
+  },
+  "keywords": [
+    "webpack",
+    "minifier"
+  ],
+  "bugs": {
+    "url": "https://github.com/mgarber93/strung/issues"
+  },
+  "homepage": "https://github.com/mgarber93/strung#readme"
 }

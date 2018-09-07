@@ -19,11 +19,14 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "jest": "^23.4.2",
+    "jest": "^23.5.0",
     "standard": "^11.0.1"
   },
   "standard": {
-    "globals": [ "expect", "test" ]
+    "globals": [
+      "expect",
+      "test"
+    ]
   },
   "engines": {
     "node": ">=7.0"
