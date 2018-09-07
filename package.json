@@ -1,6 +1,6 @@
 {
   "name": "strung-monorepo",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Monorepo for strung project",
   "main": "index.js",
   "scripts": {
