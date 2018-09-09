@@ -19,9 +19,10 @@ class HuffMannNode {
     } else {
       console.assert(this.char.length === 1,
         [
-          this.left && `my left is: ${this.left.char}`,
-          this.right && `my right is: ${this.right.char}`,
-          `im looking for: ${pattern}`
+          'Didn\'t find node!',
+          this.left && `left is: ${this.left.char}`,
+          this.right && `right is: ${this.right.char}`,
+          `looking for: ${pattern}`
         ].join(', ')
       )
       return ''
