@@ -1,6 +1,10 @@
 const HuffManEncoder = require('./HuffManEncoder')
 const segmenter = require('./Segmenter')
 
+function segmentIsCompressableString(s) {
+  return s.isString && s.length() > HuffManEncoder.decoderCallLength();
+}
+
 class Strungifier {
   constructor (options = {}) {
     this.segments = []
@@ -12,13 +16,14 @@ class Strungifier {
 
     const encoder = new HuffManEncoder(
       segments
-        .filter(s => s.isString)
+        .filter(segmentIsCompressableString)
         .map(s => s.content.slice(1, -1))
         .join(''),
       this
     )
 
-    segments.filter(s => s.isString)
+    segments
+      .filter(segmentIsCompressableString)
       .forEach(segment => {
         segment.content = encoder.encode(segment.content.slice(1, -1))
       })

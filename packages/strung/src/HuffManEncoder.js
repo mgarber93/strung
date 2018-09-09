@@ -58,7 +58,10 @@ class HuffMannNode {
 
 class HuffManEncoder {
   constructor (text, options = {}) {
-    Object.assign(this, { log: console.log }, options)
+    Object.assign(this, { 
+      log: console.log,
+      decoderSigniture: '$$$$',
+    }, options)
     this.mapCharToFreq = text.split('')
       .reduce((acc, char) => {
         acc[char] = (acc[char] || 0) + 1
@@ -69,6 +72,10 @@ class HuffManEncoder {
       .map(([key, value]) => new HuffMannNode(key, value))
 
     this.root = this.build(nodes)
+  }
+  
+  static decoderCallLength() {
+    return 4;
   }
 
   getMostCommonChar () {
@@ -172,7 +179,7 @@ class HuffManEncoder {
   }
 
   makeDecoder () {
-    const decoder = `function $$$$ (c) {
+    const decoder = `function ${this.decoderSigniture}(c) {
   ${makeSerializedDecompressor()}
   let str = bdcmp(c)
   let i = -1

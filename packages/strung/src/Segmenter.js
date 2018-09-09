@@ -4,6 +4,10 @@ class Segment {
     this.end = -1
     this.isString = !!isString
   }
+
+  length() {
+    return this.content.length;
+  }
 }
 
 function findStrings (file) {
