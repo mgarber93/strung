@@ -18,14 +18,14 @@ function findStrings (file) {
       segment.content += `\${file[index]}`
     } else if (file[index] === '\\') {
       prevWasBackSlash = true
-    } else if (file[index] === '"' || file[index] === '\'' || file[index] === '`') {
+    } else if (file[index] === '"' || file[index] === '\'') {
       const shouldIncludeInCurrentSeg = segment.isString
       if (shouldIncludeInCurrentSeg) {
         segment.content += file[index]
       }
 
-      segments.push(segment)
       segment.end = index
+      segments.push(segment)
       segment = new Segment(!segment.isString)
 
       if (!shouldIncludeInCurrentSeg) {
