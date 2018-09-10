@@ -22,7 +22,10 @@ module.exports = [
     target: 'node',
     stats: 'errors-only',
     plugins: [
-      new Strung({}),
+      new Strung({
+        verbose: true,
+        log: console.log,
+      }),
     ]
   },
 ]
