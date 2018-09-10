@@ -1,10 +1,25 @@
-<h1>Strung</h1>
-<h3>A webpack minifier leveraging huffman encoding</h3>
+# Strung 
+## A webpack minifier leveraging huffman encoding
 
-<h3> Benchmarks </h3>
+Strung is a webpack plugin that is suitable for projects with atleast 10,000 characters of bundled strings. Currently, Strung is able to compress strings between 13-28% (depending on character frequencies), and given a worst case decoder size of 1872 chars, a worst case scenario could require 14400 characters of strings for this plugin to break even.
 
-| file             | decoder | reduction | net   | net / src file |
-|------------------|---------|-----------|-------|----------------|
-| all.js           | 2347    | -6564     | -4217 | -12.54%        |
-| skeleton.min.css | 1833    | -802      | 1031  | 17.49%         |
-| webpack bundle   |         |           |       | -5.52%         |
+## Benchmarks
+
+| file             | decoder | reduction | net   |
+|------------------|---------|-----------|-------|
+| large.js         | 1872    | -5994     | -4122 |
+| skeleton.min.css | 1509    | -802      | +707  | 
+| webpack bundle   | 1203    | -2607     | -1404 |
+
+## Getting Started and Installing
+
+Strung depends on node v10.7.0. Clone this repo and run ```npm run init``` from the project root. This will bootstrap each package.
+
+## Coding style
+
+Strung uses the [standard linting style](https://standardjs.com/)
+
+## Built With
+
+* [Lerna](https://lernajs.io/) - A tool for managing JavaScript projects with multiple packages.
+* [Jest](https://jestjs.io/) - Delightful JavaScript Testing
