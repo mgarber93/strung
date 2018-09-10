@@ -1,7 +1,6 @@
 const encodableSymbols = require('./encodableSymbols')
 
 const endOfFileSymbol = '.'
-
 const numberOfEncodables = encodableSymbols.length
 const bitsPerCharacter = Math.floor(Math.log2(numberOfEncodables))
 
@@ -31,25 +30,18 @@ function binaryStringCompressor (binary) {
  * @param  {compressed binary sequence <string>}
  * @return {binary sequence <string>}
  */
-function bdcmp (c) {
-  let z = -1
-  const s = encodableSymbols
-  while (c.charAt(c.length - 1 - ++z) === endOfFileSymbol) {}
-  let o = s.indexOf(c.charAt(c.length - z - 1))
-    .toString(2)
-    .padStart(bitsPerCharacter, '0')
-    .slice(z - bitsPerCharacter)
-  for (let i = c.length - z - 2; i >= 0; i--) {
-    o = s.indexOf(c.charAt(i))
-      .toString(2)
-      .padStart(bitsPerCharacter, '0') + o
-  }
+function bdcmp(c) {
+  let z=-1
+  const s=encodableSymbols
+  while (c.charAt(c.length-1-++z)===endOfFileSymbol){}
+  let o=s.indexOf(c.charAt(c.length-z-1)).toString(2).padStart(bitsPerCharacter,'0').slice(z-bitsPerCharacter)
+  for (let i=c.length-z-2;i>=0;i--) {o=s.indexOf(c.charAt(i)).toString(2).padStart(bitsPerCharacter, '0')+o}
   return o
 }
 
 function makeSerializedDecompressor () {
   let decompressor = bdcmp.toString()
-  const symbols = `[${encodableSymbols.map(s => `${JSON.stringify(s)}`)}]`
+  const symbols = `'${encodableSymbols.join('')}'`
   decompressor = decompressor.replace(new RegExp('encodableSymbols', 'g'), symbols)
   decompressor = decompressor.replace(new RegExp('endOfFileSymbol', 'g'), `'${endOfFileSymbol}'`)
   decompressor = decompressor.replace(new RegExp('bitsPerCharacter', 'g'), bitsPerCharacter)
