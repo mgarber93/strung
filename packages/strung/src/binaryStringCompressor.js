@@ -43,8 +43,8 @@ function makeSerializedDecompressor () {
   let decompressor = bdcmp.toString()
   const symbols = `'${encodableSymbols.join('')}'`
   decompressor = decompressor.replace(new RegExp('encodableSymbols', 'g'), symbols)
-  decompressor = decompressor.replace(new RegExp('endOfFileSymbol', 'g'), `'${endOfFileSymbol}'`)
-  decompressor = decompressor.replace(new RegExp('bitsPerCharacter', 'g'), bitsPerCharacter)
+    .replace(new RegExp('endOfFileSymbol', 'g'), `'${endOfFileSymbol}'`)
+    .replace(new RegExp('bitsPerCharacter', 'g'), bitsPerCharacter)
   return decompressor
 }
 
