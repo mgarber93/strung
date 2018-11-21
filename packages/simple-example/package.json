@@ -1,33 +1,33 @@
 {
-	"name": "simple-example",
-	"version": "1.0.0",
-	"description": "Example project that uses strung",
-	"main": "index.js",
-	"scripts": {
-		"start": "webpack && node ./dist/bundle.js",
-		"start:debug": "node --inspect-brk ./node_modules/webpack/bin/webpack.js",
-		"test": "jest --env=node --colors --coverage test",
-		"test:watch": "jest --env=node --colors --watch test",
-		"lint": "standard --fix"
-	},
-	"author": "Matt Garber",
-	"contributors": [
-		"Matt Garber <mgarber93@gmail.com>"
-	],
-	"license": "ISC",
-	"dependencies": {
-		"strung": "file:../strung"
-	},
-	"devDependencies": {
-		"jest": "^23.4.2",
-		"standard": "^11.0.1",
-		"webpack": "^4.16.4",
-		"webpack-cli": "^3.1.0"
-	},
-	"standard": {
-		"globals": [
-			"expect",
-			"test"
-		]
-	}
+    "name": "simple-example",
+    "version": "1.0.0",
+    "description": "Example project that uses strung",
+    "main": "index.js",
+    "scripts": {
+        "start": "webpack && node ./dist/bundle.js",
+        "start:debug": "node --inspect-brk ./node_modules/webpack/bin/webpack.js",
+        "test": "jest --env=node --colors --coverage test",
+        "test:watch": "jest --env=node --colors --watch test",
+        "lint": "standard --fix"
+    },
+    "author": "Matt Garber",
+    "contributors": [
+        "Matt Garber <mgarber93@gmail.com>"
+    ],
+    "license": "ISC",
+    "devDependencies": {
+        "jest": "^23.4.2",
+        "standard": "^11.0.1",
+        "webpack": "^4.16.4",
+        "webpack-cli": "^3.1.0"
+    },
+    "standard": {
+        "globals": [
+            "expect",
+            "test"
+        ]
+    },
+    "dependencies": {
+        "strung": "^1.0.0"
+    }
 }

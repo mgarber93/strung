@@ -1,17 +1,21 @@
-const HuffManEncoder = require('./HuffManEncoder')
-const segmenter = require('./Segmenter')
+import HuffManEncoder from './HuffManEncoder'
+import segmenter from './Segmenter'
+import { Segment } from './Segmenter'
+import { Compiler } from 'webpack'
 
-function segmentIsCompressableString(s) {
+function segmentIsCompressableString(s: Segment) {
   return s.isString && s.length() > HuffManEncoder.decoderCallLength();
 }
 
 class Strungifier {
+  private segments?: Array<string>;
+
   constructor (options = {}) {
     this.segments = []
     Object.assign(this, options)
   }
 
-  strungify (file) {
+  strungify (file: string) {
     const segments = segmenter(file)
 
     const encoder = new HuffManEncoder(
@@ -31,13 +35,15 @@ class Strungifier {
     return encoder.makeDecoder() + segments.map(s => s.content).join('')
   }
 
-  apply (compiler) {
+  apply (compiler: Compiler) {
     compiler.hooks.compilation.tap('Strung', compilation => {
       compilation.hooks
         .succeedModule
         .tap('Strung', webpackModule => {
+          // @ts-ignore
           const input = webpackModule._source.source()
           const ouput = this.strungify(input)
+          // @ts-ignore
           webpackModule._source._value = ouput
         })
     })
@@ -60,4 +66,4 @@ class Strungifier {
   }
 }
 
-module.exports = Strungifier
+export default Strungifier

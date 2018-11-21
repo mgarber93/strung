@@ -1,4 +1,4 @@
-module.exports = [
+const encodables = [
   '!',
   '#',
   '$',
@@ -84,3 +84,5 @@ module.exports = [
   'y',
   'z'
 ]
+
+export default encodables

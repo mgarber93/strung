@@ -1,10 +1,10 @@
-const encodableSymbols = require('./encodableSymbols')
+import encodableSymbols from './encodableSymbols'
 
 const endOfFileSymbol = '.'
 const numberOfEncodables = encodableSymbols.length
 const bitsPerCharacter = Math.floor(Math.log2(numberOfEncodables))
 
-function binaryStringCompressor (binary) {
+export function binaryStringCompressor (binary: string) {
   let string = binary
   let output = ''
 
@@ -30,7 +30,8 @@ function binaryStringCompressor (binary) {
  * @param  {compressed binary sequence <string>}
  * @return {binary sequence <string>}
  */
-function bdcmp(c) {
+// @ts-ignore
+export function bdcmp(c) {
   let z=-1
   const s=encodableSymbols
   while (c.charAt(c.length-1-++z)===endOfFileSymbol){}
@@ -39,15 +40,11 @@ function bdcmp(c) {
   return o
 }
 
-function makeSerializedDecompressor () {
+export function makeSerializedDecompressor () {
   let decompressor = bdcmp.toString()
   const symbols = `'${encodableSymbols.join('')}'`
   decompressor = decompressor.replace(new RegExp('encodableSymbols', 'g'), symbols)
     .replace(new RegExp('endOfFileSymbol', 'g'), `'${endOfFileSymbol}'`)
-    .replace(new RegExp('bitsPerCharacter', 'g'), bitsPerCharacter)
+    .replace(new RegExp('bitsPerCharacter', 'g'), String(bitsPerCharacter))
   return decompressor
 }
-
-module.exports.binaryStringCompressor = binaryStringCompressor
-module.exports.bdcmp = bdcmp
-module.exports.makeSerializedDecompressor = makeSerializedDecompressor

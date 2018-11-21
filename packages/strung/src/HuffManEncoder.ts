@@ -1,17 +1,22 @@
-const {
+import {
   binaryStringCompressor,
   makeSerializedDecompressor
-} = require('./binaryStringCompressor')
+} from './binaryStringCompressor'
 
-class HuffMannNode {
-  constructor (char, freq) {
+class HuffManNode {
+  char: string
+  freq: number
+  private left: HuffManNode 
+  private right: HuffManNode
+
+  constructor (char: string, freq: number) {
     this.char = char
     this.freq = freq
     this.left = null
     this.right = null
   }
 
-  buildPath (pattern) {
+  buildPath (pattern: RegExp): string {
     if (this.left && pattern.test(this.left.char)) {
       return '0' + this.left.buildPath(pattern)
     } else if (this.right && pattern.test(this.right.char)) {
@@ -29,8 +34,8 @@ class HuffMannNode {
     }
   }
 
-  static combine (nodeA, nodeB) {
-    const parent = new HuffMannNode(
+  static combine (nodeA: HuffManNode, nodeB: HuffManNode) {
+    const parent = new HuffManNode(
       nodeA.char + nodeB.char,
       nodeA.freq + nodeB.freq
     )
@@ -56,20 +61,28 @@ class HuffMannNode {
   }
 }
 
+type IMapChartToFreq = { [key: string]: number }
+
 class HuffManEncoder {
-  constructor (text, options = {}) {
-    Object.assign(this, { 
+  root: HuffManNode
+  private mapCharToFreq: object
+  private verbose: boolean
+  private log: (...args: string[]) => void 
+  private decoderSigniture?: string
+
+  constructor (text: string, options = {}) {
+    Object.assign.call(this, { 
       log: console.log,
       decoderSigniture: '$$$$',
     }, options)
     this.mapCharToFreq = text.split('')
-      .reduce((acc, char) => {
+      .reduce((acc: IMapChartToFreq, char) => {
         acc[char] = (acc[char] || 0) + 1
         return acc
       }, {})
 
     const nodes = Object.entries(this.mapCharToFreq)
-      .map(([key, value]) => new HuffMannNode(key, value))
+      .map(([key, value]) => new HuffManNode(key, value))
 
     this.root = this.build(nodes)
   }
@@ -98,7 +111,7 @@ class HuffManEncoder {
       })
   }
 
-  build (nodes) {
+  build (nodes: Array<HuffManNode> ): HuffManNode {
     if (nodes.length <= 1) {
       return nodes[0]
     }
@@ -110,25 +123,25 @@ class HuffManEncoder {
     const lastNode = nodes.pop()
     const secondToLastNode = nodes.pop()
 
-    nodes.push(HuffMannNode.combine(lastNode, secondToLastNode))
+    nodes.push(HuffManNode.combine(lastNode, secondToLastNode))
 
     return this.build(nodes)
   }
 
-  parsingWorked (number, numberPrevious) {
-    return !numberPrevious || Math.abs(number - numberPrevious) > Number.epsilon
+  parsingWorked (number: number, numberPrevious: number) {
+    return !numberPrevious || Math.abs(number - numberPrevious) > Number.EPSILON
   }
 
-  decompressString (string) {
+  decompressString (string: string) {
     const numbers = string.slice(1, -1).split(',')
     return numbers.map(n => parseInt(n, 36).toString(2)).join('')
   }
 
-  calculateStringReport (string) {
+  calculateStringReport (string: string) {
     return `${(new Set(string.split(''))).size} symbols`
   }
 
-  encode (string, leaveAsBinary) {
+  encode (string: string, leaveAsBinary: boolean = false) {
     let encodedString = ''
     let index = -1
 
@@ -155,13 +168,13 @@ class HuffManEncoder {
     return result
   }
 
-  escape (char) {
+  escape (char: string) {
     return ['.', '(', ')', '[', ']', '?', '+', ',', '*', '\\'].includes(char) ? `\\${char}` : char
   }
 
   serializeTree () {
     const chars = this.root.char
-    const mapPathToChar = {}
+    const mapPathToChar: {[key: string]: string} = {}
 
     for (let i = 0; i < chars.length; i++) {
       const charAsPattern = new RegExp(this.escape(chars[i]))
@@ -201,4 +214,4 @@ class HuffManEncoder {
   }
 }
 
-module.exports = HuffManEncoder
+export default HuffManEncoder

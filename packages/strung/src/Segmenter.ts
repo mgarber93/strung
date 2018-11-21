@@ -1,5 +1,9 @@
-class Segment {
-  constructor (isString) {
+export class Segment {
+  content: string;
+  end: number;
+  isString: boolean;
+
+  constructor (isString: boolean = false) {
     this.content = ''
     this.end = -1
     this.isString = !!isString
@@ -10,7 +14,7 @@ class Segment {
   }
 }
 
-function findStrings (file) {
+function findStrings (file: string) {
   let prevWasBackSlash = false
   let index = -1
   let segment = new Segment()
@@ -44,4 +48,4 @@ function findStrings (file) {
   return segments
 }
 
-module.exports = findStrings
+export default findStrings

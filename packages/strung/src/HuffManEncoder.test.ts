@@ -1,5 +1,5 @@
-const HuffManEncoder = require('./HuffManEncoder')
-const example = require('../test/examples/lorem')
+import HuffManEncoder from './HuffManEncoder'
+import example from '../test/examples/lorem'
 
 test('should export a constructor', () => {
   expect(typeof HuffManEncoder).toBe('function')
@@ -40,6 +40,7 @@ test('should find the most common char', () => {
 test('should create serialized tree', () => {
   const encoder = new HuffManEncoder(example)
   const chars = encoder.root.char
+  // @ts-ignore
   const charsWithPaths = Object.values(encoder.serializeTree())
 
   chars.split('').forEach(c => {

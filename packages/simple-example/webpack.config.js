@@ -1,5 +1,5 @@
 const path = require('path')
-const Strung = require('strung')
+const Strung = require('strung').default
 
 module.exports = [
   {
