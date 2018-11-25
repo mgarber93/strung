@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A string loader",
   "main": "./dist/bundle.js",
+  "types": "./dist/Strungifier.d.ts",
   "directories": {
     "test": "test"
   },

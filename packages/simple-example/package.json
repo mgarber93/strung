@@ -4,10 +4,11 @@
     "description": "Example project that uses strung",
     "main": "index.js",
     "scripts": {
-        "start": "webpack && node ./dist/bundle.js",
+        "start": "webpack && npm run test:bundles",
         "start:debug": "node --inspect-brk ./node_modules/webpack/bin/webpack.js",
         "test": "jest --env=node --colors --coverage test",
         "test:watch": "jest --env=node --colors --watch test",
+        "test:bundles": "node ./dist/bundle.js && node ./dist/bundle.min.js",
         "lint": "standard --fix"
     },
     "author": "Matt Garber",

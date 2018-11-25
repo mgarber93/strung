@@ -1,5 +1,5 @@
 import HuffManEncoder from './HuffManEncoder'
-import example from '../test/examples/lorem'
+import example from '../test/resources/lorem'
 
 test('should export a constructor', () => {
   expect(typeof HuffManEncoder).toBe('function')
