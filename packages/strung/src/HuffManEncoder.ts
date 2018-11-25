@@ -72,7 +72,7 @@ class HuffManEncoder {
 
   constructor (text: string, options = {}) {
     Object.assign.call(this, { 
-      log: console.log,
+      log: console.log.bind(console),
       decoderSigniture: '$$$$',
     }, options)
     this.mapCharToFreq = text.split('')
@@ -192,7 +192,8 @@ class HuffManEncoder {
   }
 
   makeDecoder () {
-    const decoder = `function ${this.decoderSigniture}(c) {
+    let decoderSigniture = this.decoderSigniture || '$$$$'
+    const decoder = `function ${decoderSigniture}(c) {
   ${makeSerializedDecompressor()}
   let str = bdcmp(c)
   let i = -1

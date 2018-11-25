@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-require('./src/polyfill')
 const fs = require('fs')
-const Strungifier = require('./src/Strungifier')
+const Strungifier = require('./dist/bundle').default
 
 const args = process.argv.slice(2)
 const verbose = args.includes('--verbose')

@@ -9,7 +9,7 @@
   },
   "scripts": {
     "init": "mkdir -p test/public",
-    "build": "webpack",
+    "build": "webpack && node ./build.js",
     "postinstall": "npm run build",
     "start": "npm run build",
     "test": "jest --env=node --colors --coverage test",
@@ -23,12 +23,13 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^23.3.9",
-    "@types/node": "^10.12.5",
+    "@types/node": "^10.12.10",
     "@types/webpack": "^4.4.19",
     "jest": "^23.5.0",
     "standard": "^11.0.1",
     "ts-jest": "^23.10.4",
     "ts-loader": "^5.3.0",
+    "ts-node": "^7.0.1",
     "typescript": "^3.1.6",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2"
